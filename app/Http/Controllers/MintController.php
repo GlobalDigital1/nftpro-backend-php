@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NftBlockchain;
 use App\Http\Requests\MintRequest;
 use App\Jobs\SyncNft;
 use App\Models\Nft;
@@ -17,10 +18,10 @@ class MintController extends Controller
         $this->minter = $minter;
     }
 
-    public function create(MintRequest $request)
+    public function ether(MintRequest $request)
     {
         $data = $this->minter->mint(
-            $request->wallet_address ,//?: $request->user()->wallet_address,
+            $request->wallet_address,
             $request->file('image'),
             $request->name,
             $request->description
@@ -28,6 +29,7 @@ class MintController extends Controller
 
         $nft = Nft::query()->create([
             'name' => $data['pinData']['name'],
+            'blockchain' => NftBlockchain::ether(),
             'description' => $data['pinData']['description'],
             'image_url' => $data['pinData']['image'],
             'token_id' =>  TokenId::firstOrFail()->latest_used,

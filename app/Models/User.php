@@ -20,6 +20,9 @@ class User extends Authenticatable implements HasMedia
     protected $fillable = [
         'wallet_address',
         'name',
+        'email',
+        'email_notifications',
+        'push_notifications',
     ];
 
     public function addGems($amount): void
@@ -36,6 +39,11 @@ class User extends Authenticatable implements HasMedia
     {
         $this->addMediaCollection('avatar')
              ->singleFile();
+    }
+
+    public function nfts()
+    {
+        return $this->hasMany(Nft::class, 'owner_address');
     }
 
     public function registerMediaConversions(Media $media = null): void

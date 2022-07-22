@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -10,6 +11,7 @@ class Nft extends Model
     protected $fillable = [
         'name',
         'description',
+        'blockchain',
         'image_url',
         'contract_address',
         'token_id',
@@ -26,5 +28,10 @@ class Nft extends Model
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_address', 'wallet_address');
+    }
+
+    public function scopeAvailable(Builder $query)
+    {
+        return $query->whereIsAvailable(true);
     }
 }

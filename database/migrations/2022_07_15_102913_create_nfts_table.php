@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('nfts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('blockchain');
             $table->text('description')->nullable();
             $table->string('image_url');
             $table->string('contract_address');

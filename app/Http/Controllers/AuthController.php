@@ -31,7 +31,7 @@ class AuthController extends Controller
                     );
 
         return response()->json([
-            'date' => [
+            'data' => [
                 'message' => $message,
             ],
         ]);
@@ -49,7 +49,11 @@ class AuthController extends Controller
         $user = User::query()->firstOrCreate(
             [
                 'wallet_address' => $request->wallet_address,
-            ]);
+            ],
+            [
+                $request->only('name', 'email'),
+            ]
+        );
 
         return UserResource::withToken($user);
     }
