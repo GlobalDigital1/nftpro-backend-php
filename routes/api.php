@@ -24,7 +24,7 @@ Route::post('revenue-cat', [RevenueCatWebHookController::class, 'handle']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('mint/ether', [MintController::class, 'ether']);
     Route::get('nfts', [UserNftController::class, 'index']);
-    Route::get('nft', [UserNftController::class, 'show']);
+    Route::get('nfts/{id}', [UserNftController::class, 'show']);
     Route::get('profile', [ProfileController::class, 'show']);
     Route::post('profile', [ProfileController::class, 'update']);
 });
