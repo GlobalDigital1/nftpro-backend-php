@@ -15,18 +15,19 @@ class SyncNft implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var \App\Services\EtherScan
+     * @var \App\Models\Nft
      */
-    private EtherScan $etherScan;
+    private Nft $nft;
+
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(EtherScan $etherScan)
+    public function __construct(Nft $nft)
     {
-        $this->etherScan = $etherScan;
+        $this->nft = $nft;
     }
 
     /**
@@ -34,13 +35,13 @@ class SyncNft implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Nft $nft)
+    public function handle(EtherScan $etherScan)
     {
-        $response = $this->etherScan->getTransactionStatus($nft->transaction_hash);
+        $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
 
         if (!$response['isError']) {
-            $nft->is_available = true;
-            $nft->save();
+            $this->nft->is_available = true;
+            $this->nft->save();
         }
     }
 }

@@ -31,4 +31,13 @@ class MintRequest extends FormRequest
             'wallet_address' => ['sometimes', 'string', 'max:255'],
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        if(!$this->wallet_address){
+            $this->merge([
+                'wallet_address' => $this->user()->wallet_address
+            ]);
+        }
+    }
 }

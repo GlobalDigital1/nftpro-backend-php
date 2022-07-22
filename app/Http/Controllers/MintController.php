@@ -25,14 +25,15 @@ class MintController extends Controller
             $request->name,
             $request->description
         );
+
         $nft = Nft::query()->create([
             'name' => $data['pinData']['name'],
             'description' => $data['pinData']['description'],
             'image_url' => $data['pinData']['image'],
             'token_id' =>  TokenId::firstOrFail()->latest_used,
             'contract_address' =>  $data['mintData']['to'],
-            'owner_address' =>  $data['mintData']['from'],
-            'creator_address' =>  $data['mintData']['from'],
+            'owner_address' =>  $request->wallet_address,
+            'creator_address' =>  $request->wallet_address,
             'transaction_hash' =>  $data['mintData']['hash'],
         ]);
         SyncNft::dispatch($nft)->delay(now()->addMinute());
