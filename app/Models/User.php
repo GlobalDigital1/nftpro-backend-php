@@ -43,7 +43,7 @@ class User extends Authenticatable implements HasMedia
 
     public function nfts()
     {
-        return $this->hasMany(Nft::class, 'owner_address');
+        return $this->hasMany(Nft::class, 'owner_address', 'wallet_address');
     }
 
     public function registerMediaConversions(Media $media = null): void
