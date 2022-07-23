@@ -26,7 +26,7 @@ class UpdateProfileRequest extends FormRequest
         return [
             'avatar'              => ['sometimes', 'image', 'max:10240'],
             'name'                => ['sometimes', 'string', 'max:255'],
-            'email'               => ['sometimes', 'string', 'max:255'],
+            'email'               => ['sometimes', 'email', 'max:255'],
             'email_notifications' => ['sometimes', 'boolean'],
             'push_notifications'  => ['sometimes', 'boolean'],
         ];

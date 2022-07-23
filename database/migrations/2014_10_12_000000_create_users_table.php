@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->integer('balance')->default(0);
             $table->string('name');
             $table->string('email');
-            $table->boolean('email_notifications');
-            $table->boolean('push_notifications');
+            $table->boolean('email_notifications')->default(true);
+            $table->boolean('push_notifications')->default(true);
             $table->timestamps();
         });
     }
