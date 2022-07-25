@@ -18,6 +18,7 @@ class NftResource extends JsonResource
             'id'               => $this->id,
             'name'             => $this->name,
             'description'      => $this->description,
+            'blockchain'       => $this->blockchain,
             'image_url'        => $this->image_url,
             'contract_address' => $this->contract_address,
             'token_id'         => $this->token_id,
