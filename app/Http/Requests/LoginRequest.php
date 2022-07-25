@@ -26,8 +26,8 @@ class LoginRequest extends FormRequest
         return [
             'wallet_address' => ['required', 'string', 'max:255', 'exists:login_attempts,wallet_address'],
             'signature'      => ['required', 'string'],
-            'name'           => ['required', 'string', 'max:255'],
-            'email'          => ['required', 'email', 'max:255'],
+            'name'           => ['sometimes', 'string', 'max:255'],
+            'email'          => ['sometimes', 'email', 'max:255'],
         ];
     }
 }
