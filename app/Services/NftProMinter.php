@@ -26,6 +26,15 @@ class NftProMinter
                    ])->json();
     }
 
+    public function transfer(string $from, string $to, $tokenId)
+    {
+        return Http::post($this->host . '/mint', [
+            'from'    => $from,
+            'to'      => $to,
+            'tokenId' => $tokenId,
+        ])->json();
+    }
+
     private function getTokenId()
     {
         $tokenId = TokenId::query()->first();
