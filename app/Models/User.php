@@ -25,6 +25,11 @@ class User extends Authenticatable implements HasMedia
         'push_notifications',
     ];
 
+    protected $casts = [
+        'email_notifications' => 'bool',
+        'push_notifications'  => 'bool',
+    ];
+
     public function addGems($amount): void
     {
         event(new GemsAdded($this->id, $amount));

@@ -22,7 +22,6 @@ class NftResource extends JsonResource
             'contract_address' => $this->contract_address,
             'token_id'         => $this->token_id,
             'transaction_hash' => $this->transaction_hash,
-            'is_available'     => $this->is_available,
             'created_at'       => $this->created_at,
 
             'owner_address'   => $this->owner_address,
