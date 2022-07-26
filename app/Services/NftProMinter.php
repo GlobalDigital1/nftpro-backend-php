@@ -15,12 +15,12 @@ class NftProMinter
         $this->host = $host;
     }
 
-    public function mint(string $wallet_address, UploadedFile $image, string $name, string $description)
+    public function mint(string $chain, string $wallet_address, UploadedFile $image, string $name, string $description)
     {
         return Http::attach('image', $image->getContent(), $image->getFilename())
-                   ->post($this->host . '/mint', [
+                   ->post($this->host . "/$chain/mint", [
                        'accountId'   => $wallet_address,
-                       'tokenId'     => $this->getTokenId(),
+                       'tokenId'     => $this->getTokenId($chain),
                        'name'        => $name,
                        'description' => $description,
                    ])->json();
@@ -28,16 +28,16 @@ class NftProMinter
 
     public function transfer(string $from, string $to, $tokenId)
     {
-        return Http::post($this->host . '/mint', [
+        return Http::post($this->host . '/transfer', [
             'from'    => $from,
             'to'      => $to,
             'tokenId' => $tokenId,
         ])->json();
     }
 
-    private function getTokenId()
+    private function getTokenId(string $chain)
     {
-        $tokenId = TokenId::query()->first();
+        $tokenId = TokenId::query()->whereBlockchain($chain)->first();
         $tokenId->latest_used++;
         $tokenId->save();
         return $tokenId->latest_used;

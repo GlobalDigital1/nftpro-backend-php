@@ -35,6 +35,12 @@ return [
         'key'  => env('ETHERSCAN_KEY'),
         'host' => env('ETHERSCAN_HOST'),
     ],
+
+    'polygonscan' => [
+        'key'  => env('POLYGONSCAN_KEY'),
+        'host' => env('POLYGONSCAN_HOST'),
+    ],
+
     'minter' => [
         'host' => env('MINT_SERVER_HOST')
     ]

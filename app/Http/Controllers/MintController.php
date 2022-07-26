@@ -18,9 +18,10 @@ class MintController extends Controller
         $this->minter = $minter;
     }
 
-    public function ether(MintRequest $request)
+    public function create(MintRequest $request, $chain)
     {
         $data = $this->minter->mint(
+            $chain,
             $request->wallet_address,
             $request->file('image'),
             $request->name,
@@ -28,15 +29,15 @@ class MintController extends Controller
         );
 
         $nft = Nft::query()->create([
-            'name' => $data['pinData']['name'],
-            'blockchain' => NftBlockchain::ether(),
-            'description' => $data['pinData']['description'],
-            'image_url' => $data['pinData']['image'],
-            'token_id' =>  TokenId::firstOrFail()->latest_used,
-            'contract_address' =>  $data['mintData']['to'],
-            'owner_address' =>  $request->wallet_address,
-            'creator_address' =>  $request->wallet_address,
-            'transaction_hash' =>  $data['mintData']['hash'],
+            'name'             => $data['pinData']['name'],
+            'blockchain'       => $chain,
+            'description'      => $data['pinData']['description'],
+            'image_url'        => $data['pinData']['image'],
+            'token_id'         => TokenId::query()->whereBlockchain($chain)->firstOrFail()->latest_used,
+            'contract_address' => $data['mintData']['to'],
+            'owner_address'    => $request->wallet_address,
+            'creator_address'  => $request->wallet_address,
+            'transaction_hash' => $data['mintData']['hash'],
         ]);
         SyncNft::dispatch($nft)->delay(now()->addMinute());
     }

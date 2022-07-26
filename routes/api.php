@@ -22,7 +22,7 @@ Route::get('auth/message', [AuthController::class, 'message']);
 Route::post('auth/verify', [AuthController::class, 'login']);
 Route::post('revenue-cat', [RevenueCatWebHookController::class, 'handle']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('mint/ether', [MintController::class, 'ether']);
+    Route::post('mint/{chain}', [MintController::class, 'create']);
     Route::get('nfts', [UserNftController::class, 'index']);
     Route::get('nfts/{id}', [UserNftController::class, 'show']);
     Route::get('profile', [ProfileController::class, 'show']);

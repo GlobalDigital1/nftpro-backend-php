@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 
-class EtherScan
+class PolygonScan
 {
     private string $host;
     private string $key;

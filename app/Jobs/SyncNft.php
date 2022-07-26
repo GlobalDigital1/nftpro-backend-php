@@ -2,8 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Enums\NftBlockchain;
 use App\Models\Nft;
 use App\Services\EtherScan;
+use App\Services\PolygonScan;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -35,11 +37,19 @@ class SyncNft implements ShouldQueue
      *
      * @return void
      */
-    public function handle(EtherScan $etherScan)
+    public function handle(EtherScan $etherScan, PolygonScan $polygonScan)
     {
-        $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
+        do {
+            usleep(5000000);
+            if (NftBlockchain::from($this->nft->blockchain)->equals(NftBlockchain::eth())) {
+                $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
+            } else {
+                $response = $polygonScan->getTransactionStatus($this->nft->transaction_hash);
+            }
+            \Log::debug($response);
+        } while (!isset($response['status']) || $response['status'] == '');
 
-        if (!$response['isError']) {
+        if ($response['status'] == '1') {
             $this->nft->is_available = true;
             $this->nft->save();
         }
