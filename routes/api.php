@@ -27,4 +27,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('nfts/{id}', [UserNftController::class, 'show']);
     Route::get('profile', [ProfileController::class, 'show']);
     Route::post('profile', [ProfileController::class, 'update']);
+    Route::delete('profile', [ProfileController::class, 'delete']);
 });

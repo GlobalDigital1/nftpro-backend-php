@@ -24,4 +24,9 @@ class ProfileController extends Controller
 
         return UserResource::make($user->refresh());
     }
+
+    public function delete(Request $request)
+    {
+        $request->user()->delete();
+    }
 }
