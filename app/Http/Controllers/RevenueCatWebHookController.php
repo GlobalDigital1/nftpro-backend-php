@@ -13,11 +13,15 @@ class RevenueCatWebHookController extends Controller
     {
         $event = $request->get('event');
         Log::debug($event);
-        $user = User::query()->find(Arr::get($event, 'original_app_user_id'));
-        $amount = 10;
+        if (Arr::get($event, 'type') !== 'NON_RENEWING_PURCHASE') {
+            return;
+        }
+        $user   = User::query()->find(Arr::get($event, 'app_user_id'));
         if (!$user) {
             return;
         }
+
+        $amount = (integer) str_replace('com.nftpro.', '', Arr::get($event, 'product_id'));
         $user->addGems($amount);
     }
 }
