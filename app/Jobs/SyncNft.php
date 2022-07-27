@@ -39,15 +39,14 @@ class SyncNft implements ShouldQueue
      */
     public function handle(EtherScan $etherScan, PolygonScan $polygonScan)
     {
-        do {
-            usleep(5000000);
-            if (NftBlockchain::from($this->nft->blockchain)->equals(NftBlockchain::eth())) {
-                $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
-            } else {
-                $response = $polygonScan->getTransactionStatus($this->nft->transaction_hash);
-            }
-            \Log::debug($response);
-        } while (!isset($response['status']) || $response['status'] == '');
+        if (NftBlockchain::from($this->nft->blockchain)->equals(NftBlockchain::eth())) {
+            $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
+        } else {
+            $response = $polygonScan->getTransactionStatus($this->nft->transaction_hash);
+        }
+        if (!isset($response['status']) || $response['status'] == '') {
+            self::dispatch($this->nft)->delay(now()->addSeconds(10));
+        }
 
         if ($response['status'] == '1') {
             $this->nft->is_available = true;

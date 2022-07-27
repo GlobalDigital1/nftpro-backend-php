@@ -50,9 +50,7 @@ class AuthController extends Controller
             [
                 'wallet_address' => $request->wallet_address,
             ],
-            [
-                $request->only('name', 'email'),
-            ]
+            $request->only('name', 'email'),
         );
 
         return UserResource::withToken($user);
