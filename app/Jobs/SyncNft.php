@@ -46,6 +46,7 @@ class SyncNft implements ShouldQueue
         }
         if (!isset($response['status']) || $response['status'] == '') {
             self::dispatch($this->nft)->delay(now()->addSeconds(10));
+            return;
         }
 
         if ($response['status'] == '1') {
