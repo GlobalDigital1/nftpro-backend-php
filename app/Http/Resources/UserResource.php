@@ -17,8 +17,9 @@ class UserResource extends JsonResource
             'wallet_id'           => $this->wallet_address,
             'name'                => $this->name,
             'email'               => $this->email,
-            'email_notifications' => $this->email_notifications,
-            'push_notifications'  => $this->push_notifications,
+            'email_notifications' => $this->when($request->user()?->id === $this->id, $this->email_notifications),
+            'push_notifications'  => $this->when($request->user()?->id === $this->id, $this->push_notifications),
+            'valance'             => $this->when($request->user()?->id === $this->id, $this->balance),
             'avatar'              => MediaResource::make($this->getFirstMedia('avatar')),
         ];
     }
