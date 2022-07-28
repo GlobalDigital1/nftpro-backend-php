@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\NftBlockchain;
 use App\Http\Requests\MintRequest;
 use App\Jobs\SyncNft;
+use App\Models\Config;
 use App\Models\Nft;
 use App\Models\TokenId;
 use App\Services\NftProMinter;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MintController extends Controller
 {
@@ -20,6 +21,13 @@ class MintController extends Controller
 
     public function create(MintRequest $request, $chain)
     {
+        try {
+            $amount = Config::query()->firstOrFail()->{$chain . '_mint_price'};
+            $request->user()->subtractGems($amount);
+        } catch (\Throwable $exception) {
+            return new BadRequestHttpException($exception->getMessage());
+        }
+
         $data = $this->minter->mint(
             $chain,
             $request->wallet_address,

@@ -37,6 +37,9 @@ class User extends Authenticatable implements HasMedia
 
     public function subtractGems($amount): void
     {
+        if ($amount > $this->balance) {
+            throw new \RuntimeException('Insufficient funds');
+        }
         event(new GemsSubtracted($this->id, $amount));
     }
 
