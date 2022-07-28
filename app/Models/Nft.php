@@ -20,6 +20,10 @@ class Nft extends Model
         'transaction_hash',
     ];
 
+    protected $casts = [
+        'is_available' => 'bool'
+    ];
+
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_address', 'wallet_address');

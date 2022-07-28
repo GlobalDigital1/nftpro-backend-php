@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\MintController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevenueCatWebHookController;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('auth/message', [AuthController::class, 'message']);
 Route::post('auth/verify', [AuthController::class, 'login']);
 Route::post('revenue-cat', [RevenueCatWebHookController::class, 'handle']);
+Route::get('config', [ConfigController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('mint/{chain}', [MintController::class, 'create']);
     Route::get('nfts', [UserNftController::class, 'index']);

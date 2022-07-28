@@ -7,9 +7,11 @@
     "require": {
         "php": "^8.0.2",
         "doctrine/dbal": "^3.3",
+        "ebess/advanced-nova-media-library": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "kornrunner/keccak": "^1.1",
         "laravel/framework": "^9.19",
+        "laravel/nova": "^4.12",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "simplito/elliptic-php": "^1.0",
@@ -36,6 +38,12 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
+        }
+    },
+    "repositories": {
+        "laravel/nova": {
+            "type": "git",
+            "url": "https://nft-pro_OrsJA:Gq6HaTVLni5wiaqmBeqW@gitlab.com/nerdzlab_internal/laravel-nova.git"
         }
     },
     "scripts": {
