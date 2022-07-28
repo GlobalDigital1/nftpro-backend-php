@@ -12,7 +12,6 @@ class RevenueCatWebHookController extends Controller
     public function handle(Request $request)
     {
         $event = $request->get('event');
-        Log::debug($event);
         if (Arr::get($event, 'type') !== 'NON_RENEWING_PURCHASE') {
             return;
         }
