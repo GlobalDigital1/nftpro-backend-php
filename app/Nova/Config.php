@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\Config as ConfigModel;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 
 class Config extends Resource
@@ -24,13 +25,13 @@ class Config extends Resource
                 ->sortable()
                 ->rules('required'),
 
-            Text::make('Ether Mint Price')
+            Number::make('Eth Mint Price')
                 ->sortable()
-                ->rules('required'),
+                ->rules('required', 'min:0'),
 
-            Text::make('Polygon Mint Price')
+            Number::make('Polygon Mint Price')
                 ->sortable()
-                ->rules('required'),
+                ->rules('required', 'min:0'),
         ];
     }
 
