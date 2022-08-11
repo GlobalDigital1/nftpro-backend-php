@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\TransactionCompleted;
+use App\Events\TransactionFailed;
 use App\Listeners\ApplyTransferToNft;
 use App\Listeners\MarkNftAsAvailable;
 use Illuminate\Auth\Events\Registered;
@@ -24,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         TransactionCompleted::class => [
             MarkNftAsAvailable::class,
             ApplyTransferToNft::class
+        ],
+        TransactionFailed::class => [
+            MarkNftAsAvailable::class
         ]
     ];
 

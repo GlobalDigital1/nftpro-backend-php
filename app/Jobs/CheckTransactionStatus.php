@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Enums\NftBlockchain;
 use App\Enums\TransactionType;
 use App\Events\TransactionCompleted;
+use App\Events\TransactionFailed;
 use App\Services\EtherScan;
 use App\Services\PolygonScan;
 use Illuminate\Bus\Queueable;
@@ -24,8 +25,8 @@ class CheckTransactionStatus implements ShouldQueue
     public function __construct(string $transactionHash, string $blockchain, TransactionType $type)
     {
         $this->transactionHash = $transactionHash;
-        $this->blockchain = $blockchain;
-        $this->type = $type;
+        $this->blockchain      = $blockchain;
+        $this->type            = $type;
     }
 
     public function handle(EtherScan $etherScan, PolygonScan $polygonScan)
@@ -42,6 +43,8 @@ class CheckTransactionStatus implements ShouldQueue
 
         if ($response['status'] == '1') {
             TransactionCompleted::dispatch($this->transactionHash, $this->blockchain, $this->type);
+        } elseif ($response['status'] == '0') {
+            TransactionFailed::dispatch($this->transactionHash, $this->blockchain, $this->type);
         }
     }
 }

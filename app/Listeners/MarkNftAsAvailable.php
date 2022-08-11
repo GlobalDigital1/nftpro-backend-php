@@ -3,15 +3,15 @@
 namespace App\Listeners;
 
 use App\Enums\TransactionType;
-use App\Events\TransactionCompleted;
+use App\Events\TransactionFailed;
 use App\Models\Nft;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class MarkNftAsAvailable implements ShouldQueue
 {
-    public function handle(TransactionCompleted $event)
+    public function handle($event)
     {
-        if (!$event->type->equals(TransactionType::mint())) {
+        if ($event->type->equals(TransactionType::mint()) && $event instanceof TransactionFailed) {
             return;
         }
 
