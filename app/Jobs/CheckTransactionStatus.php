@@ -40,7 +40,6 @@ class CheckTransactionStatus implements ShouldQueue
             return;
         }
 
-
         if ($response['status'] == '1') {
             TransactionCompleted::dispatch($this->transactionHash, $this->blockchain, $this->type);
         }

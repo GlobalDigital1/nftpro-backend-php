@@ -11,7 +11,7 @@ class TransferController extends Controller
 {
     public function create(TransferRequest $request, $chain)
     {
-        $transfer = Transfer::query()->create([
+        $transfer = Transfer::query()->create(
             array_merge(
                 $request->validated(),
                 [
@@ -19,7 +19,7 @@ class TransferController extends Controller
                     'blockchain' => $chain,
                 ]
             ),
-        ]);
+        );
 
         CheckTransactionStatus::dispatch($transfer->transaction_hash, $transfer->blockchain, TransactionType::transfer())
                               ->delay(now()->addSeconds(10));
