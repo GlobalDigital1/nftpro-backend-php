@@ -12,7 +12,7 @@ class TransferController extends Controller
 {
     public function create(TransferRequest $request, $chain)
     {
-        $nft = Nft::query()->whereTokenId($request->token_id)->available()->firstOrFail();
+        $nft = $request->user()->nfts()->whereTokenId($request->token_id)->available()->firstOrFail();
 
         $transfer = Transfer::query()->create(
             array_merge(
