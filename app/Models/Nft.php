@@ -18,6 +18,7 @@ class Nft extends Model
         'owner_address',
         'creator_address',
         'transaction_hash',
+        'is_available',
     ];
 
     protected $casts = [

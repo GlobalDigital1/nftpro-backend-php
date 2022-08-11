@@ -5,7 +5,8 @@ namespace App\Providers;
 use App\Events\TransactionCompleted;
 use App\Events\TransactionFailed;
 use App\Listeners\ApplyTransferToNft;
-use App\Listeners\MarkNftAsAvailable;
+use App\Listeners\MarkMintedNftAsAvailable;
+use App\Listeners\MarkNotTransferredNftAsAvailable;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,11 +24,11 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         TransactionCompleted::class => [
-            MarkNftAsAvailable::class,
+            MarkMintedNftAsAvailable::class,
             ApplyTransferToNft::class
         ],
         TransactionFailed::class => [
-            MarkNftAsAvailable::class
+            MarkNotTransferredNftAsAvailable::class
         ]
     ];
 

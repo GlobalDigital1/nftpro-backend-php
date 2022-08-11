@@ -3,14 +3,14 @@
 namespace App\Listeners;
 
 use App\Enums\TransactionType;
-use App\Events\TransactionCompleted;
+use App\Events\TransactionFailed;
 use App\Models\Nft;
 use App\Models\Transfer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ApplyTransferToNft implements ShouldQueue
+class MarkNotTransferredNftAsAvailable implements ShouldQueue
 {
-    public function handle(TransactionCompleted $event)
+    public function handle(TransactionFailed $event)
     {
         if (!$event->type->equals(TransactionType::transfer())) {
             return;
@@ -25,7 +25,6 @@ class ApplyTransferToNft implements ShouldQueue
            ->whereTokenId($transaction->token_id)
            ->update([
                'is_available' => true,
-               'owner_address' => $transaction->to,
            ]);
     }
 }
