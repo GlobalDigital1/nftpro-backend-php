@@ -36,7 +36,7 @@ class CheckTransactionStatus implements ShouldQueue
             $response = $polygonScan->getTransactionStatus($this->transactionHash);
         }
         if (!isset($response['status']) || $response['status'] == '') {
-            self::dispatch($this->transactionHash, $this->blockchain)->delay(now()->addSeconds(10));
+            self::dispatch($this->transactionHash, $this->blockchain, $this->type)->delay(now()->addSeconds(10));
             return;
         }
 
