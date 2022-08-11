@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Enums\NftBlockchain;
+use App\Enums\TransactionType;
 use App\Events\TransactionCompleted;
-use App\Models\Nft;
 use App\Services\EtherScan;
 use App\Services\PolygonScan;
 use Illuminate\Bus\Queueable;
@@ -19,24 +19,15 @@ class CheckTransactionStatus implements ShouldQueue
 
     private string $transactionHash;
     private string $blockchain;
+    private TransactionType $type;
 
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(string $transactionHash, string $blockchain)
+    public function __construct(string $transactionHash, string $blockchain, TransactionType $type)
     {
         $this->transactionHash = $transactionHash;
         $this->blockchain = $blockchain;
+        $this->type = $type;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle(EtherScan $etherScan, PolygonScan $polygonScan)
     {
         if (NftBlockchain::from($this->blockchain)->equals(NftBlockchain::eth())) {
@@ -51,7 +42,7 @@ class CheckTransactionStatus implements ShouldQueue
 
 
         if ($response['status'] == '1') {
-            TransactionCompleted::dispatch($this->transactionHash, $this->blockchain);
+            TransactionCompleted::dispatch($this->transactionHash, $this->blockchain, $this->type);
         }
     }
 }
