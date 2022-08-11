@@ -38,4 +38,9 @@ class Nft extends Model
     {
         return $query->whereIsAvailable(true);
     }
+
+    public function scopeNotAvailable(Builder $query)
+    {
+        return $query->whereIsAvailable(false);
+    }
 }

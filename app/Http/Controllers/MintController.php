@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionType;
 use App\Http\Requests\MintRequest;
-use App\Jobs\SyncNft;
+use App\Jobs\CheckTransactionStatus;
 use App\Models\Config;
 use App\Models\Nft;
 use App\Models\TokenId;
@@ -47,6 +48,8 @@ class MintController extends Controller
             'creator_address'  => $request->wallet_address,
             'transaction_hash' => $data['mintData']['hash'],
         ]);
-        SyncNft::dispatch($nft)->delay(now()->addMinute());
+
+        CheckTransactionStatus::dispatch($nft->transaction_hash, $nft->blockchain, TransactionType::mint())
+                              ->delay(now()->addSeconds(10));
     }
 }

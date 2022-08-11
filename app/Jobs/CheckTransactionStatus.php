@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Enums\NftBlockchain;
+use App\Events\TransactionCompleted;
 use App\Models\Nft;
 use App\Services\EtherScan;
 use App\Services\PolygonScan;
@@ -12,14 +13,12 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncNft implements ShouldQueue
+class CheckTransactionStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * @var \App\Models\Nft
-     */
-    private Nft $nft;
+    private string $transactionHash;
+    private string $blockchain;
 
 
     /**
@@ -27,9 +26,10 @@ class SyncNft implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Nft $nft)
+    public function __construct(string $transactionHash, string $blockchain)
     {
-        $this->nft = $nft;
+        $this->transactionHash = $transactionHash;
+        $this->blockchain = $blockchain;
     }
 
     /**
@@ -39,19 +39,19 @@ class SyncNft implements ShouldQueue
      */
     public function handle(EtherScan $etherScan, PolygonScan $polygonScan)
     {
-        if (NftBlockchain::from($this->nft->blockchain)->equals(NftBlockchain::eth())) {
-            $response = $etherScan->getTransactionStatus($this->nft->transaction_hash);
+        if (NftBlockchain::from($this->blockchain)->equals(NftBlockchain::eth())) {
+            $response = $etherScan->getTransactionStatus($this->transactionHash);
         } else {
-            $response = $polygonScan->getTransactionStatus($this->nft->transaction_hash);
+            $response = $polygonScan->getTransactionStatus($this->transactionHash);
         }
         if (!isset($response['status']) || $response['status'] == '') {
-            self::dispatch($this->nft)->delay(now()->addSeconds(10));
+            self::dispatch($this->transactionHash, $this->blockchain)->delay(now()->addSeconds(10));
             return;
         }
 
+
         if ($response['status'] == '1') {
-            $this->nft->is_available = true;
-            $this->nft->save();
+            TransactionCompleted::dispatch($this->transactionHash, $this->blockchain);
         }
     }
 }

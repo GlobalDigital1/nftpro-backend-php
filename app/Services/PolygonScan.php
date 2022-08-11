@@ -24,4 +24,14 @@ class PolygonScan
             'apikey' => $this->key,
         ])->throw()->json()['result'];
     }
+
+    public function getTransactionDetails($transactionHash)
+    {
+        return Http::get($this->host, [
+            'module' => 'proxy',
+            'action' => 'eth_getTransactionByHash',
+            'txhash' => $transactionHash,
+            'apikey' => $this->key,
+        ])->throw()->json()['result'];
+    }
 }
