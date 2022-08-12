@@ -13,7 +13,7 @@ class UserNftController extends Controller
                         ->nfts()
                         ->available()
                         ->orderByDesc('created_at')
-                        ->paginate();
+                        ->paginate(20);
 
         return NftResource::collection($nfts);
     }
