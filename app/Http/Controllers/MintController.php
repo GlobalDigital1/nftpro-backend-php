@@ -26,16 +26,21 @@ class MintController extends Controller
             $amount = Config::query()->firstOrFail()->{$chain . '_mint_price'};
             $request->user()->subtractGems($amount);
         } catch (\Throwable $exception) {
-            return new BadRequestHttpException($exception->getMessage());
+            throw new BadRequestHttpException($exception->getMessage());
         }
 
-        $data = $this->minter->mint(
-            $chain,
-            $request->wallet_address,
-            $request->file('image'),
-            $request->name,
-            $request->description
-        );
+        try {
+            $data = $this->minter->mint(
+                $chain,
+                $request->wallet_address,
+                $request->file('image'),
+                $request->name,
+                $request->description
+            );
+        } catch (\Throwable $exception) {
+            $request->user()->addGems($amount);
+            throw new BadRequestHttpException('Transaction fail');
+        }
 
         $nft = Nft::query()->create([
             'name'             => $data['pinData']['name'],
