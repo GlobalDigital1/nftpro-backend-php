@@ -9,10 +9,10 @@ class PolygonScan
     private string $host;
     private string $key;
 
-    public function __construct(string $host, string $key)
+    public function __construct()
     {
-        $this->host = $host;
-        $this->key = $key;
+        $this->host = config('services.polygonscan.host');
+        $this->key = config('services.polygonscan.key');
     }
 
     public function getTransactionStatus($transactionHash)

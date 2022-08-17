@@ -195,9 +195,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        \App\Providers\EtherScanServiceProvider::class,
-        \App\Providers\PolygonScanServiceProvider::class,
-        \App\Providers\NftProMinterServiceProvider::class
 
     ],
 

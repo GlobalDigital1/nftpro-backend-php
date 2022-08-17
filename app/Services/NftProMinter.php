@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Http;
 
 class NftProMinter
 {
-    private $host;
+    private string $host;
 
-    public function __construct($host)
+    public function __construct()
     {
-        $this->host = $host;
+        $this->host = config('services.minter.host');
     }
 
     public function mint(string $chain, string $wallet_address, UploadedFile $image, string $name, string $description)

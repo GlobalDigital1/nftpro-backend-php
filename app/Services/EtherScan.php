@@ -9,10 +9,10 @@ class EtherScan
     private string $host;
     private string $key;
 
-    public function __construct(string $host, string $key)
+    public function __construct()
     {
-        $this->host = $host;
-        $this->key = $key;
+        $this->host = config('services.etherscan.host');
+        $this->key = config('services.etherscan.key');
     }
 
     public function getTransactionStatus($transactionHash)

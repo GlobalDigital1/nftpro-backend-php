@@ -43,5 +43,10 @@ return [
 
     'minter' => [
         'host' => env('MINT_SERVER_HOST')
+    ],
+
+    'owlracle' => [
+        'host' => env('OWLRACLE_HOST'),
+        'key' => env('OWLRACLE_KEY')
     ]
 ];

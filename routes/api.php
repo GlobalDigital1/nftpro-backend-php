@@ -3,6 +3,7 @@
 use App\Enums\NftBlockchain;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\GasController;
 use App\Http\Controllers\MintController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevenueCatWebHookController;
@@ -29,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('mint/{chain}', [MintController::class, 'create'])
          ->whereIn('chain', NftBlockchain::toArray());
     Route::post('transfer/{chain}', [TransferController::class, 'create'])
+         ->whereIn('chain', NftBlockchain::toArray());
+    Route::get('gas/{chain}', [GasController::class, 'show'])
          ->whereIn('chain', NftBlockchain::toArray());
     Route::get('nfts', [UserNftController::class, 'index']);
     Route::get('nfts/{id}', [UserNftController::class, 'show']);
