@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Owlracle;
+use Illuminate\Support\Facades\Cache;
 
 class GasController extends Controller
 {
@@ -14,6 +15,10 @@ class GasController extends Controller
 
     public function show($chain)
     {
-        return $this->owlracle->{"get{$chain}Gas"}();
+        return Cache::remember("gas.$chain", 60, function () use ($chain) {
+            return $this->owlracle->{"get{$chain}Gas"}();
+        });
+
+
     }
 }
