@@ -23,7 +23,7 @@ class NftProMinter
                        'tokenId'     => $this->getTokenId($chain),
                        'name'        => $name,
                        'description' => $description,
-                   ])->json();
+                   ])->throw()->json();
     }
 
     public function transfer(string $from, string $to, $tokenId)
