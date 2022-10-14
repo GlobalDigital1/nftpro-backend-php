@@ -5,7 +5,9 @@ namespace App\Listeners;
 use App\Enums\TransactionType;
 use App\Events\TransactionCompleted;
 use App\Models\Nft;
+use App\Notifications\NftMinted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Notification;
 
 class MarkMintedNftAsAvailable implements ShouldQueue
 {
@@ -15,11 +17,15 @@ class MarkMintedNftAsAvailable implements ShouldQueue
             return;
         }
 
-        Nft::query()
+        $nft = Nft::query()
            ->whereTransactionHash($event->transactionHash)
            ->whereBlockchain($event->blockchain)
-           ->update([
-               'is_available' => true,
-           ]);
+           ->firstOrFail();
+
+        $nft->update([
+            'is_available' => true,
+        ]);
+
+        Notification::send($nft->owner, new NftMinted($nft));
     }
 }

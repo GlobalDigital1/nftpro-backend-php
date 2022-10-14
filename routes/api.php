@@ -8,8 +8,8 @@ use App\Http\Controllers\MintController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RevenueCatWebHookController;
 use App\Http\Controllers\TransferController;
+use App\Http\Controllers\UserFcmTokenController;
 use App\Http\Controllers\UserNftController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +27,7 @@ Route::post('auth/verify', [AuthController::class, 'login']);
 Route::post('revenue-cat', [RevenueCatWebHookController::class, 'handle']);
 Route::get('config', [ConfigController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('fcm', [UserFcmTokenController::class, 'create']);
     Route::post('mint/{chain}', [MintController::class, 'create'])
          ->whereIn('chain', NftBlockchain::toArray());
     Route::post('transfer/{chain}', [TransferController::class, 'create'])

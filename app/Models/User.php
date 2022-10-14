@@ -54,6 +54,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Nft::class, 'owner_address', 'wallet_address');
     }
 
+    public function fcmTokens()
+    {
+        return $this->hasMany(FcmToken::class);
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('big')
@@ -67,5 +72,10 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaConversion('small')
              ->fit(Manipulations::FIT_CONTAIN, 100, 100)
              ->nonQueued();
+    }
+
+    public function routeNotificationForFcm()
+    {
+        return $this->fcmTokens->pluck('token')->all();
     }
 }

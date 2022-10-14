@@ -10,6 +10,7 @@
         "ebess/advanced-nova-media-library": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "kornrunner/keccak": "^1.1",
+        "laravel-notification-channels/fcm": "^2.5",
         "laravel/framework": "^9.19",
         "laravel/nova": "^4.12",
         "laravel/sanctum": "^2.14.1",
